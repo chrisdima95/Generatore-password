@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generatore Password</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Generatore password</h1>
+    <div class="form-group">
+      <label for="lunghezza">Lunghezza</label>
+      <input type="number" id="lunghezza" min="5" max="20" value="10" />
+    </div>
+    <div class="form-group checkbox-group">
+      <input type="checkbox" id="caratteri-minuscoli" checked />
+      <label for="caratteri-minuscoli">Caratteri Minuscoli</label>
+    </div>
+    <div class="form-group checkbox-group">
+      <input type="checkbox" id="caratteri-maiuscoli" checked />
+      <label for="caratteri-maiuscoli">Caratteri Maiuscoli</label>
+    </div>
+    <div class="form-group checkbox-group">
+      <input type="checkbox" id="caratteri-numerici" checked />
+      <label for="caratteri-numerici">Caratteri Numerici</label>
+    </div>
+    <div class="form-group checkbox-group">
+      <input type="checkbox" id="caratteri-speciali" checked />
+      <label for="caratteri-speciali">Caratteri Speciali</label>
+    </div>
+    <button id="genera-btn" type="button">Genera Password</button>
+    <div id="risultato"></div>
+  </div>
+
+  <script>
+    const lunghezzaPassword = document.getElementById("lunghezza");
+    const caratteriMinuscoli = document.getElementById("caratteri-minuscoli");
+    const caratteriMaiuscoli = document.getElementById("caratteri-maiuscoli");
+    const caratteriNumerici = document.getElementById("caratteri-numerici");
+    const caratteriSpeciali = document.getElementById("caratteri-speciali");
+    const generaBtn = document.getElementById("genera-btn");
+    const risultatoDiv = document.getElementById("risultato");
+
+    const listaCaratteriMinuscoli = "abcdefghijklmnopqrstuvwxyz";
+    const listaCaratteriMaiuscoli = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const listaCaratteriNumerici = "0123456789";
+    const listaCaratteriSpeciali = "!@#$%^&*()_+~`|}{[]:;?><,./-=";
+
+    generaBtn.addEventListener("click", generaPassword);
+
+    function generaPassword() {
+      let caratteriDisponibili = "";
+      let risultato = "";
+
+      if (caratteriMinuscoli.checked) caratteriDisponibili += listaCaratteriMinuscoli;
+      if (caratteriMaiuscoli.checked) caratteriDisponibili += listaCaratteriMaiuscoli;
+      if (caratteriNumerici.checked) caratteriDisponibili += listaCaratteriNumerici;
+      if (caratteriSpeciali.checked) caratteriDisponibili += listaCaratteriSpeciali;
+
+      const lunghezza = Math.min(Math.max(parseInt(lunghezzaPassword.value) || 10, 5), 20);
+
+      if (caratteriDisponibili.length === 0) {
+        risultatoDiv.textContent = "Seleziona almeno un tipo di carattere!";
+        risultatoDiv.style.color = "#b54c4c";
+        return;
+      } else {
+        risultatoDiv.style.color = "#222";
+      }
+
+      for (let i = 0; i < lunghezza; i++) {
+        const indice = Math.floor(Math.random() * caratteriDisponibili.length);
+        risultato += caratteriDisponibili.charAt(indice);
+      }
+
+      risultatoDiv.textContent = risultato;
+    }
+  </script>
+</body>
+</html>
